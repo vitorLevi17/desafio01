@@ -2,7 +2,7 @@ package br.com.desafio01.entities;
 
 import jakarta.persistence.*;
 
-
+//LOMBOK
 @Entity
 @Table(name = "role")
 public class Role {
@@ -11,7 +11,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tipo_usuario; //UNIQUE
+    private String tipoUsuario; //UNIQUE
 
     public enum Values{
         CLIENTE(1),
@@ -28,8 +28,9 @@ public class Role {
         return id;
     }
 
-    public String getTipo_usuario() {
-        return tipo_usuario;
+    @Column(name = "tipo_usuario")
+    public String getTipoUsuario() {
+        return tipoUsuario;
     }
 
 }
