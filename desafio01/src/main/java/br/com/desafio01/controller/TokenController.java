@@ -1,9 +1,8 @@
 package br.com.desafio01.controller;
 
-import br.com.desafio01.config.SecurityConfig;
 import br.com.desafio01.dto.LoginDto;
 import br.com.desafio01.dto.LoginResponse;
-import br.com.desafio01.repository.UserRepository;
+import br.com.desafio01.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,19 +20,19 @@ public class TokenController {
 
     private final JwtEncoder jwtEncoder;
 
-    private final UserRepository userRepository; //TROCAR PARA SERVICE!!!!!!!!!!!!!!!!!!!!!!
+    private final UserService userService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public TokenController(JwtEncoder jwtEncoder,UserRepository userRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public TokenController(JwtEncoder jwtEncoder,UserService userService,BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jwtEncoder = jwtEncoder;
-        this.userRepository=userRepository;
+        this.userService=userService;
         this.bCryptPasswordEncoder=bCryptPasswordEncoder;
     }
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login (@RequestBody LoginDto loginDto){
 
-        var user = userRepository.findByUsername(loginDto.username());
+        var user = userService.findByUsername(loginDto.username());
 
         if (user.isEmpty() || !user.get().isLoginCorrect(loginDto,bCryptPasswordEncoder)){
             throw new BadCredentialsException("Usuario ou senha inválidos");
