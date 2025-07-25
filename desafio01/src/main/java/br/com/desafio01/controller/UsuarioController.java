@@ -1,7 +1,7 @@
 package br.com.desafio01.controller;
 
-import br.com.desafio01.entities.User;
 import br.com.desafio01.services.UserService;
+import br.com.desafio01.dto.UserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +16,21 @@ public class UsuarioController {
         this.userService = userService;
     }
     @GetMapping("/usuarios")
-    public ResponseEntity<List<User>> Usuarios(){
+    public ResponseEntity<List<UserResponse>> Usuarios(){
         var usuarios = userService.findAllUsers();
-        return ResponseEntity.ok(usuarios);
+
+        List<UserResponse> responseList = usuarios.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getNome(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getRole(),
+                        user.getEndereco(),
+                        user.getDtAtualização()
+                ))
+                .toList();
+        return ResponseEntity.ok(responseList);
     }
 
 }
