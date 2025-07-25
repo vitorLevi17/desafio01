@@ -6,10 +6,7 @@ import br.com.desafio01.services.RoleService;
 import br.com.desafio01.services.UserService;
 import br.com.desafio01.dto.UserResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,6 +42,12 @@ public class UsuarioController {
         User user = new User(createUserDto,role);
         userService.saveUser(user);
         return ResponseEntity.ok("Usuario criado com sucesso");
+    }
+
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity deletarUsuario(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ResponseEntity.ok("O usuario: "+id+", foi deletado com sucesso");
     }
 
 }
