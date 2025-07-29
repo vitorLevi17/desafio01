@@ -1,5 +1,6 @@
 package br.com.desafio01.services;
 
+import br.com.desafio01.entities.Role;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.repository.RoleRepository;
 import br.com.desafio01.repository.UserRepository;
@@ -33,5 +34,9 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
+    }
+
+    public List<User> findByRole(Optional<Role> role) {
+        return userRepository.findByRole(role);
     }
 }
