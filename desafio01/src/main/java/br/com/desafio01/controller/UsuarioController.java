@@ -37,6 +37,22 @@ public class UsuarioController {
                 .toList();
         return ResponseEntity.ok(responseList);
     }
+    @GetMapping("/usuarios/nome/{nome}")
+    public ResponseEntity<List<UserResponse>> listarUsuariosPorNome(@PathVariable String nome){
+        var todos_usuarios = userService.findAllUsers();
+        List<UserResponse> responseList = todos_usuarios.stream()
+                .filter(user -> user.getNome() != null && user.getNome().contains(nome))
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getNome(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getRole(),
+                        user.getEndereco(),
+                        user.getDtAtualização()
+                )).toList();
+        return ResponseEntity.ok(responseList);
+    }
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<UserResponse> buscarUsuarioPorId(@PathVariable Long id){
         User user = userService.findById(id)
@@ -52,7 +68,6 @@ public class UsuarioController {
         );
         return ResponseEntity.ok(userResponse);
     }
-
     @GetMapping("/usuarios/tipo/{id}")
     public ResponseEntity<List<UserResponse>> listarUsuarios(@PathVariable Long id){
         if (id < 1 || id > 2){ //ids das roles de cliente e dono
