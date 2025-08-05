@@ -47,25 +47,9 @@ public class UsuarioController {
     }
     @GetMapping("/usuarios/tipo/{id}")
     public ResponseEntity<List<UserResponse>> listarUsuarios(@PathVariable Long id){
-        if (id < 1 || id > 2){ //ids das roles de cliente e dono
-            return (ResponseEntity<List<UserResponse>>) ResponseEntity.notFound();
-        }
         Optional<Role> role = roleService.findById(id);
-        List<User> users = userService.findByRole(role);
-
-        List<UserResponse> response = users.stream()
-                .map(user -> new UserResponse(
-                        user.getId(),
-                        user.getNome(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getEndereco(),
-                        user.getDtAtualização()
-                ))
-                .toList();
-
-        return ResponseEntity.ok(response);
+        List<UserResponse> users = userService.findByRole(role,id);
+        return ResponseEntity.ok(users);
     }
     @PostMapping("/usuarios")
     public ResponseEntity criarUsuario(@RequestBody CreateUserDto createUserDto){
