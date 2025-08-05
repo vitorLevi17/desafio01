@@ -1,5 +1,6 @@
 package br.com.desafio01.services;
 
+import br.com.desafio01.dto.UserResponse;
 import br.com.desafio01.entities.Role;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.repository.RoleRepository;
@@ -17,8 +18,36 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> findAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> findAllUsers(){
+        var usuarios = userRepository.findAll();
+        List<UserResponse> responseList = usuarios.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getNome(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getRole(),
+                        user.getEndereco(),
+                        user.getDtAtualização()
+                ))
+                .toList();
+        return responseList;
+    }
+    public List<UserResponse> findAllUsersNome(String nome){
+        var usuarios = userRepository.findAll();
+        List<UserResponse> responseList = usuarios.stream()
+                .filter(user -> user.getNome() != null && user.getNome().toLowerCase().contains(nome.toLowerCase()))
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getNome(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getRole(),
+                        user.getEndereco(),
+                        user.getDtAtualização()
+                ))
+                .toList();
+        return responseList;
     }
 
     public Optional<User> findById(Long id){

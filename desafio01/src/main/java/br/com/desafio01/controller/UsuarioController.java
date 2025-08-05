@@ -23,35 +23,12 @@ public class UsuarioController {
     @GetMapping("/usuarios")
     public ResponseEntity<List<UserResponse>> listarUsuario(){
         var usuarios = userService.findAllUsers();
-
-        List<UserResponse> responseList = usuarios.stream()
-                .map(user -> new UserResponse(
-                        user.getId(),
-                        user.getNome(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getEndereco(),
-                        user.getDtAtualização()
-                ))
-                .toList();
-        return ResponseEntity.ok(responseList);
+        return ResponseEntity.ok(usuarios);
     }
     @GetMapping("/usuarios/nome/{nome}")
     public ResponseEntity<List<UserResponse>> listarUsuariosPorNome(@PathVariable String nome){
-        var todos_usuarios = userService.findAllUsers();
-        List<UserResponse> responseList = todos_usuarios.stream()
-                .filter(user -> user.getNome() != null && user.getNome().contains(nome))
-                .map(user -> new UserResponse(
-                        user.getId(),
-                        user.getNome(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getEndereco(),
-                        user.getDtAtualização()
-                )).toList();
-        return ResponseEntity.ok(responseList);
+        var usuarios = userService.findAllUsersNome(nome);
+        return ResponseEntity.ok(usuarios);
     }
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<UserResponse> buscarUsuarioPorId(@PathVariable Long id){
@@ -90,7 +67,6 @@ public class UsuarioController {
 
         return ResponseEntity.ok(response);
     }
-
     @PostMapping("/usuarios")
     public ResponseEntity criarUsuario(@RequestBody CreateUserDto createUserDto){
         var role = roleService.findByTipoUsuario(createUserDto.role());
