@@ -1,5 +1,6 @@
 package br.com.desafio01.services;
 
+import br.com.desafio01.dto.CreateUserDto;
 import br.com.desafio01.dto.UserResponse;
 import br.com.desafio01.entities.Role;
 import br.com.desafio01.entities.User;
@@ -47,7 +48,12 @@ public class UserService {
         var user = userRepository.findByUsername(username);
         return user;
     }
-    public User saveUser(User user){
+    public User saveUser(CreateUserDto createUserDto,Role role){
+        User user = new User(createUserDto,role);
+        return userRepository.save(user);
+    }
+
+    public User updateUser(User user){
         return userRepository.save(user);
     }
     public void deleteUser(Long id){
