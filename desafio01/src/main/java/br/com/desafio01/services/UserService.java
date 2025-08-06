@@ -42,10 +42,6 @@ public class UserService {
         );
         return userResponse;
     }
-    public Optional<User> findByUsername(String username) {
-        var user = userRepository.findByUsername(username);
-        return user;
-    }
     public User saveUser(CreateUserDto createUserDto,Role role){
         User user = new User(createUserDto,role);
         return userRepository.save(user);
