@@ -18,34 +18,14 @@ public class UserService {
     }
     public List<UserResponse> findAllUsers(){
         var usuarios = userRepository.findAll();
-        List<UserResponse> responseList = usuarios.stream()
-                .map(user -> new UserResponse(
-                        user.getId(),
-                        user.getNome(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getEndereco(),
-                        user.getDtAtualização()
-                ))
-                .toList();
+        var responseList = responseUserResponse(usuarios);
         return responseList;
     }
     public List<UserResponse> findAllUsersNome(String nome){
         var usuarios = userRepository.findAll();
-        List<UserResponse> responseList = usuarios.stream()
-                .filter(user -> user.getNome() != null && user.getNome().toLowerCase().contains(nome.toLowerCase()))
-                .map(user -> new UserResponse(
-                        user.getId(),
-                        user.getNome(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getEndereco(),
-                        user.getDtAtualização()
-                ))
-                .toList();
-        return responseList;
+        var lista = responseUserResponse(usuarios);
+        var responseList = lista.stream().filter(user -> user.nome() != null && user.nome().toLowerCase().contains(nome.toLowerCase()));
+        return responseList.toList();
     }
     public Optional<User> findById(Long id){
         return userRepository.findById(id);
@@ -65,7 +45,11 @@ public class UserService {
             return null;
         }
         var users = userRepository.findByRole(role);
-        List<UserResponse> response = users.stream()
+        var response = responseUserResponse(users);
+        return response;
+    }
+    private List<UserResponse> responseUserResponse(List<User> usuarios){
+        List<UserResponse> responseList = usuarios.stream()
                 .map(user -> new UserResponse(
                         user.getId(),
                         user.getNome(),
@@ -76,6 +60,6 @@ public class UserService {
                         user.getDtAtualização()
                 ))
                 .toList();
-        return response;
+        return responseList;
     }
 }
