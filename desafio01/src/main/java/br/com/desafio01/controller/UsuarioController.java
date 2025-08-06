@@ -32,21 +32,11 @@ public class UsuarioController {
     }
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<UserResponse> buscarUsuarioPorId(@PathVariable Long id){
-        User user = userService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        UserResponse userResponse = new UserResponse(
-                user.getId(),
-                user.getNome(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getRole(),
-                user.getEndereco(),
-                user.getDtAtualização()
-        );
-        return ResponseEntity.ok(userResponse);
+        var user = userService.findByIdUser(id);
+        return ResponseEntity.ok(user);
     }
     @GetMapping("/usuarios/tipo/{id}")
-    public ResponseEntity<List<UserResponse>> listarUsuarios(@PathVariable Long id){
+    public ResponseEntity<List<UserResponse>> listarUsuariosTipo(@PathVariable Long id){
         Optional<Role> role = roleService.findById(id);
         List<UserResponse> users = userService.findByRole(role,id);
         return ResponseEntity.ok(users);

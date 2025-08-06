@@ -27,6 +27,19 @@ public class UserService {
         var responseList = lista.stream().filter(user -> user.nome() != null && user.nome().toLowerCase().contains(nome.toLowerCase()));
         return responseList.toList();
     }
+    public UserResponse findByIdUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        UserResponse userResponse = new UserResponse(
+                user.getId(),
+                user.getNome(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole(),
+                user.getEndereco(),
+                user.getDtAtualização()
+        );
+        return userResponse;
+    }
     public Optional<User> findById(Long id){
         return userRepository.findById(id);
     }
