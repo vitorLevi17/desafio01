@@ -44,24 +44,14 @@ public class UsuarioController {
     @PostMapping("/usuarios")
     public ResponseEntity criarUsuario(@RequestBody CreateUserDto createUserDto){
         var role = roleService.findByTipoUsuario(createUserDto.role());
-        //User user = new User(createUserDto,role);
         userService.saveUser(createUserDto,role);
         return ResponseEntity.ok("Usuario criado com sucesso");
     }
     @PutMapping("/usuarios")
     public ResponseEntity editarUsuario(@RequestBody UpdateUserDto updateUserDto){
-        User user = userService.findById(updateUserDto.id())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        user.setNome(updateUserDto.nome());
-        user.setEmail(updateUserDto.email());
-        user.setEndereco(updateUserDto.endereco());
-
         var role = roleService.findByTipoUsuario(updateUserDto.role());
-        user.setRole(role);
-
-        userService.updateUser(user);
-        return ResponseEntity.ok("O usuario" +updateUserDto.id()+ "foi editado com sucesso");
+        userService.updateUser(updateUserDto,role);
+        return ResponseEntity.ok("O usuario " +updateUserDto.id()+ " foi editado com sucesso");
     }
     @DeleteMapping("/usuarios/{id}")
     public ResponseEntity deletarUsuario(@PathVariable Long id){

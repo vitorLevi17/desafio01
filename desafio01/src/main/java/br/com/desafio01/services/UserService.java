@@ -1,6 +1,7 @@
 package br.com.desafio01.services;
 
 import br.com.desafio01.dto.CreateUserDto;
+import br.com.desafio01.dto.UpdateUserDto;
 import br.com.desafio01.dto.UserResponse;
 import br.com.desafio01.entities.Role;
 import br.com.desafio01.entities.User;
@@ -41,9 +42,6 @@ public class UserService {
         );
         return userResponse;
     }
-    public Optional<User> findById(Long id){
-        return userRepository.findById(id);
-    }
     public Optional<User> findByUsername(String username) {
         var user = userRepository.findByUsername(username);
         return user;
@@ -52,8 +50,13 @@ public class UserService {
         User user = new User(createUserDto,role);
         return userRepository.save(user);
     }
-
-    public User updateUser(User user){
+    public User updateUser(UpdateUserDto updateUserDto,Role role){
+        User user = userRepository.findById(updateUserDto.id())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        user.setNome(updateUserDto.nome());
+        user.setEmail(updateUserDto.email());
+        user.setEndereco(updateUserDto.endereco());
+        user.setRole(role);
         return userRepository.save(user);
     }
     public void deleteUser(Long id){
