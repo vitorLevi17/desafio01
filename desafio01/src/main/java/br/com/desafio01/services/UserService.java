@@ -47,6 +47,9 @@ public class UserService {
         if (userRepository.findByUsername(createUserDto.username()).isPresent()){
             throw new ResourceNotFoundException("Username inválido");
         }
+        if (userRepository.findByEmail(createUserDto.email()).isPresent()){
+            throw new ResourceNotFoundException("Email inválido");
+        }
         User user = new User(createUserDto,role);
         return userRepository.save(user);
     }
