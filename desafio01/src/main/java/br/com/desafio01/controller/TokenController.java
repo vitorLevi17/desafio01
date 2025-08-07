@@ -56,18 +56,18 @@ public class TokenController {
         return ResponseEntity.ok(new LoginResponse(jwtValue,expiresIn));
     }
     @PutMapping("/mudar-senha")
-    public ResponseEntity mudarSenha(@RequestBody MudarSenhaDto mudarSenhaDto){
+    public ResponseEntity mudarSenha(@Valid @RequestBody MudarSenhaDto mudarSenhaDto){
         User user = tokenService.findByUsername(mudarSenhaDto.username()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         if (!bCryptPasswordEncoder.matches(mudarSenhaDto.last_password(),user.getPassword())){
-            throw new BadCredentialsException("Usuario ou senha incorreto");
+            throw new ResourceNotFoundException("Usuario ou senha incorreto");
         }
         if (mudarSenhaDto.password().equals(mudarSenhaDto.confirm_password())){
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setPassword(passwordEncoder.encode(mudarSenhaDto.password()));
             tokenService.editarSenha(user);
         }else {
-            throw new BadCredentialsException("Usuario ou senha incorretos");
+            throw new ResourceNotFoundException("Senhas não coincidem");
         }
         return ResponseEntity.ok("Senha alterada com sucesso");
     }
