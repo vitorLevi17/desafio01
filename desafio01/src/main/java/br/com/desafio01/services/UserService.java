@@ -66,7 +66,12 @@ public class UserService {
         return userRepository.save(user);
     }
     public void deleteUser(Long id){
-        userRepository.deleteById(id);
+        var usuario = userRepository.findById(id);
+        if (usuario.isPresent()) {
+            userRepository.deleteById(id);
+        }else {
+            throw new ResourceNotFoundException("Usuario não encontrado");
+        }
     }
     public List<UserResponse> findByRole(Optional<Role> role, Long id) {
         if (id < 1 || id > 2){ //ids das roles de cliente e dono
