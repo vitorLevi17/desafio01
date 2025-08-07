@@ -49,7 +49,7 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuario criado com sucesso");
     }
     @PutMapping("/usuarios")
-    public ResponseEntity editarUsuario(@RequestBody UpdateUserDto updateUserDto){
+    public ResponseEntity editarUsuario(@Valid @RequestBody UpdateUserDto updateUserDto){
         var role = roleService.findByTipoUsuario(updateUserDto.role());
         userService.updateUser(updateUserDto,role);
         return ResponseEntity.ok("O usuario " +updateUserDto.id()+ " foi editado com sucesso");

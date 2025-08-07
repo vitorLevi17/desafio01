@@ -56,6 +56,9 @@ public class UserService {
     public User updateUser(UpdateUserDto updateUserDto,Role role){
         User user = userRepository.findById(updateUserDto.id())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        if (userRepository.findByEmail(updateUserDto.email()).isPresent()){
+            throw new ResourceNotFoundException("Email inválido");
+        }
         user.setNome(updateUserDto.nome());
         user.setEmail(updateUserDto.email());
         user.setEndereco(updateUserDto.endereco());
