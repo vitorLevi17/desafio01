@@ -5,7 +5,6 @@ import br.com.desafio01.dto.LoginResponse;
 import br.com.desafio01.dto.MudarSenhaDto;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.services.TokenService;
-import br.com.desafio01.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,12 +57,15 @@ public class TokenController {
     public ResponseEntity mudarSenha(@RequestBody MudarSenhaDto mudarSenhaDto){
         User user = tokenService.findByUsername(mudarSenhaDto.username()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        if (!bCryptPasswordEncoder.matches(mudarSenhaDto.last_password(),user.getPassword())){
+            throw new BadCredentialsException("Usuario ou senha incorreto");
+        }
         if (mudarSenhaDto.password().equals(mudarSenhaDto.confirm_password())){
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setPassword(passwordEncoder.encode(mudarSenhaDto.password()));
-            //userService.updateUser(user);
+            tokenService.editarSenha(user);
         }else {
-            return ResponseEntity.ok("Usuario ou senha incorreto");
+            throw new BadCredentialsException("Usuario ou senha incorretos");
         }
         return ResponseEntity.ok("Senha alterada com sucesso");
     }

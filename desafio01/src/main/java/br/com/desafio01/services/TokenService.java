@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
 @Service
 public class TokenService {
 
@@ -19,5 +18,8 @@ public class TokenService {
     public Optional<User> findByUsername(String username) {
         var user = userRepository.findByUsername(username);
         return user;
+    }
+    public User editarSenha(User user){
+        return userRepository.save(user);
     }
 }
