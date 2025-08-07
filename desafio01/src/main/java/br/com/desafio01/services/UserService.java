@@ -44,6 +44,9 @@ public class UserService {
         return userResponse;
     }
     public User saveUser(CreateUserDto createUserDto,Role role){
+        if (userRepository.findByUsername(createUserDto.username()).isPresent()){
+            throw new ResourceNotFoundException("Username inválido");
+        }
         User user = new User(createUserDto,role);
         return userRepository.save(user);
     }

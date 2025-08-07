@@ -7,6 +7,7 @@ import br.com.desafio01.entities.Role;
 import br.com.desafio01.services.RoleService;
 import br.com.desafio01.services.UserService;
 import br.com.desafio01.dto.UserResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -42,7 +43,7 @@ public class UsuarioController {
         return ResponseEntity.ok(users);
     }
     @PostMapping("/usuarios")
-    public ResponseEntity criarUsuario(@RequestBody CreateUserDto createUserDto){
+    public ResponseEntity criarUsuario(@Valid @RequestBody CreateUserDto createUserDto){
         var role = roleService.findByTipoUsuario(createUserDto.role());
         userService.saveUser(createUserDto,role);
         return ResponseEntity.ok("Usuario criado com sucesso");

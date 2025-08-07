@@ -21,7 +21,7 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status_code.value()).body(new ResourceNotFoundDTO(e.getMessage(), status_code.value()));
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationErrorDTO> handlerResourceNotFoundException(MethodArgumentNotValidException e){
+    public ResponseEntity<ValidationErrorDTO> handleValidationErrors(MethodArgumentNotValidException e){
         var status_code = HttpStatus.BAD_REQUEST;
         List<String> errors = new ArrayList<>();
         for (var error: e.getBindingResult().getFieldErrors()){
