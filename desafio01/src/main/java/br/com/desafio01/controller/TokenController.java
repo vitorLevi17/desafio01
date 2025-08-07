@@ -5,6 +5,7 @@ import br.com.desafio01.dto.LoginResponse;
 import br.com.desafio01.dto.MudarSenhaDto;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.services.TokenService;
+import br.com.desafio01.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -55,7 +56,7 @@ public class TokenController {
     }
     @PutMapping("/mudar-senha")
     public ResponseEntity mudarSenha(@RequestBody MudarSenhaDto mudarSenhaDto){
-        User user = tokenService.findByUsername(mudarSenhaDto.username()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User user = tokenService.findByUsername(mudarSenhaDto.username()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         if (!bCryptPasswordEncoder.matches(mudarSenhaDto.last_password(),user.getPassword())){
             throw new BadCredentialsException("Usuario ou senha incorreto");

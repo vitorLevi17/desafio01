@@ -6,6 +6,7 @@ import br.com.desafio01.dto.UserResponse;
 import br.com.desafio01.entities.Role;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.repository.UserRepository;
+import br.com.desafio01.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class UserService {
         return responseList.toList();
     }
     public UserResponse findByIdUser(Long id){
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         UserResponse userResponse = new UserResponse(
                 user.getId(),
                 user.getNome(),
@@ -48,7 +49,7 @@ public class UserService {
     }
     public User updateUser(UpdateUserDto updateUserDto,Role role){
         User user = userRepository.findById(updateUserDto.id())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         user.setNome(updateUserDto.nome());
         user.setEmail(updateUserDto.email());
         user.setEndereco(updateUserDto.endereco());
