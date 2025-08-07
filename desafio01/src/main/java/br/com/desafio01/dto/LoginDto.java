@@ -1,4 +1,6 @@
 package br.com.desafio01.dto;
 
-public record LoginDto(String username, String password) {
+import jakarta.validation.constraints.NotBlank;
+public record LoginDto(@NotBlank(message = "Está vazio") String username,
+                       @NotBlank(message = "Está vazio") String password) {
 }

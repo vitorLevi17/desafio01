@@ -6,6 +6,7 @@ import br.com.desafio01.dto.MudarSenhaDto;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.services.TokenService;
 import br.com.desafio01.services.exceptions.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,12 +35,12 @@ public class TokenController {
         this.bCryptPasswordEncoder=bCryptPasswordEncoder;
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login (@RequestBody LoginDto loginDto){
+    public ResponseEntity<LoginResponse> login (@Valid @RequestBody LoginDto loginDto){
 
         var user = tokenService.findByUsername(loginDto.username());
 
         if (user.isEmpty() || !user.get().isLoginCorrect(loginDto,bCryptPasswordEncoder)){
-            throw new BadCredentialsException("Usuario ou senha inválidos");
+            throw new ResourceNotFoundException("Usuario ou senha inválidos");
         }
 
         var now = Instant.now();
