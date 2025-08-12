@@ -76,8 +76,8 @@ public class UserService {
         }
     }
     public List<UserResponse> findByRole(Optional<Role> role, Long id) {
-        if (id < 1 || id > 2){ //ids das roles de cliente e dono
-            return null;
+        if (id < 1 || id > 2){
+            throw new ResourceNotFoundException("Selecione um Id válido");
         }
         var users = userRepository.findByRole(role);
         var response = responseUserResponse(users);
