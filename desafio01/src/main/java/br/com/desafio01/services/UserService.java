@@ -6,6 +6,7 @@ import br.com.desafio01.dto.UserResponse;
 import br.com.desafio01.entities.Role;
 import br.com.desafio01.entities.User;
 import br.com.desafio01.repository.UserRepository;
+import br.com.desafio01.services.exceptions.ConflictException;
 import br.com.desafio01.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +46,10 @@ public class UserService {
     }
     public User saveUser(CreateUserDto createUserDto,Role role){
         if (userRepository.findByUsername(createUserDto.username()).isPresent()){
-            throw new ResourceNotFoundException("Username inválido");
+            throw new ConflictException("Username inválido");
         }
         if (userRepository.findByEmail(createUserDto.email()).isPresent()){
-            throw new ResourceNotFoundException("Email inválido");
+            throw new ConflictException("Email inválido");
         }
         User user = new User(createUserDto,role);
         return userRepository.save(user);
@@ -57,7 +58,7 @@ public class UserService {
         User user = userRepository.findById(updateUserDto.id())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         if (userRepository.findByEmail(updateUserDto.email()).isPresent()){
-            throw new ResourceNotFoundException("Email inválido");
+            throw new ConflictException("Email inválido");
         }
         user.setNome(updateUserDto.nome());
         user.setEmail(updateUserDto.email());

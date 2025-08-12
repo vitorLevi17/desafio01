@@ -1,7 +1,8 @@
 package br.com.desafio01.controller.handlers;
 
-import br.com.desafio01.dto.ResourceNotFoundDTO;
+import br.com.desafio01.dto.ExceptionDTO;
 import br.com.desafio01.dto.ValidationErrorDTO;
+import br.com.desafio01.services.exceptions.ConflictException;
 import br.com.desafio01.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,14 @@ import java.util.List;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ResourceNotFoundDTO> handlerResourceNotFoundException(ResourceNotFoundException e){
+    public ResponseEntity<ExceptionDTO> handlerResourceNotFoundException(ResourceNotFoundException e){
         var status_code = HttpStatus.NOT_FOUND;
-        return ResponseEntity.status(status_code.value()).body(new ResourceNotFoundDTO(e.getMessage(), status_code.value()));
+        return ResponseEntity.status(status_code.value()).body(new ExceptionDTO(e.getMessage(), status_code.value()));
+    }
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ExceptionDTO> handlerConflictException(ConflictException e){
+        var status_code = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status_code.value()).body(new ExceptionDTO(e.getMessage(),status_code.value()));
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorDTO> handleValidationErrors(MethodArgumentNotValidException e){
