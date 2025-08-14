@@ -17,3 +17,7 @@ O desafio proposto foi de uma API de gerencimento de usuários para restaurantes
 - **Arquitetura:** MVC
 - **Banco de Dados:** PostgreSQL
 - **Outros:** Postman, Docker
+
+## Próximas Etapas
+
+- **Testes**
