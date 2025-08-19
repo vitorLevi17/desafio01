@@ -21,3 +21,4 @@ O desafio proposto foi de uma API de gerencimento de usuários para restaurantes
 ## Próximas Etapas
 
 - **Testes**
+- **Monitoramento de erros com Java Melody**
