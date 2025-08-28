@@ -1,9 +1,12 @@
 package br.com.desafio01.config;
 
+
+import br.com.desafio01.repository.UserRepository;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +15,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -29,13 +35,17 @@ public class SecurityConfig {
     private RSAPublicKey publicKey;
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
+    @Autowired
+    private UserRepository userRepository;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/login" ).permitAll() //permitir acesso ao endpopint sem autenticação
-                        .anyRequest() //fazer com que todos os endpoints sejam acessados somente com autenticação
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/monitoring/**").authenticated() //mudar para hasRole("Admin")
+                        .anyRequest()
                 .authenticated())
-                .csrf(csrf -> csrf.disable()) //
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults()) //
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
@@ -50,9 +60,18 @@ public class SecurityConfig {
     public JwtDecoder jwtDecoder(){
         return NimbusJwtDecoder.withPublicKey(publicKey).build();
     }
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return username -> userRepository.findByUsername(username)
+            .map(usuario -> User.builder()
+                    .username(usuario.getUsername())
+                    .password(usuario.getPassword())
+                    .build()
+            )
+               .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+}
 }
