@@ -15,7 +15,8 @@ public class Role {
 
     public enum Values{
         CLIENTE(1),
-        DONO(2);
+        DONO(2),
+        ADMIN(3);
 
         long id;
 
