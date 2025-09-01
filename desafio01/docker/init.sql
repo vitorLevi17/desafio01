@@ -24,5 +24,13 @@ VALUES (
     'Endereço do Dono'
 );
 
-
+CREATE TABLE tipo_cozinha(
+    id BIGSERIAL PRIMARY KEY,
+    tipo VARCHAR(255) NOT NULL
+);
+INSERT INTO tipo_cozinha(tipo) VALUES('Ilha');
+INSERT INTO tipo_cozinha(tipo) VALUES('Zonas');
+INSERT INTO tipo_cozinha(tipo) VALUES('Montagem');
+INSERT INTO tipo_cozinha(tipo) VALUES('Paralela');
+INSERT INTO tipo_cozinha(tipo) VALUES('Em U');
 
