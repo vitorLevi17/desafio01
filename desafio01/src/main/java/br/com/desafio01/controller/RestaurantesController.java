@@ -2,7 +2,7 @@ package br.com.desafio01.controller;
 
 import br.com.desafio01.dto.CreateRestauranteDTO;
 import br.com.desafio01.dto.RestauranteResponse;
-import br.com.desafio01.entities.Restaurante;
+import br.com.desafio01.dto.UpdateRestauranteDTO;
 import br.com.desafio01.services.RestauranteService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,11 @@ public class RestaurantesController {
     public ResponseEntity postRestaurante(@Valid @RequestBody CreateRestauranteDTO createRestauranteDTO){
         restauranteService.saveRestaurante(createRestauranteDTO);
         return ResponseEntity.ok("Restaurente "+ createRestauranteDTO.nome() +" cadastrado com sucesso");
+    }
+    @PutMapping("/restaurantes")
+    public ResponseEntity updateRestaurante(@Valid @RequestBody UpdateRestauranteDTO updateRestauranteDTO){
+        restauranteService.updateRestaurante(updateRestauranteDTO);
+        return ResponseEntity.ok("Restaurante "+ updateRestauranteDTO.id() +" alterado com sucesso");
     }
     @DeleteMapping("/restaurantes/{id}")
     public ResponseEntity deleteRestaurante(@PathVariable Long id){

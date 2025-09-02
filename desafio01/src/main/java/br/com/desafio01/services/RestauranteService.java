@@ -2,6 +2,7 @@ package br.com.desafio01.services;
 
 import br.com.desafio01.dto.CreateRestauranteDTO;
 import br.com.desafio01.dto.RestauranteResponse;
+import br.com.desafio01.dto.UpdateRestauranteDTO;
 import br.com.desafio01.entities.Restaurante;
 import br.com.desafio01.entities.TipoCozinha;
 import br.com.desafio01.entities.User;
@@ -29,7 +30,6 @@ public class RestauranteService {
     public List<RestauranteResponse> getRestaurantes(){
         var restaurantesList = repository.findAll();
         var restaurantes = responseRestauranteMetohd(restaurantesList);
-        System.out.println(restaurantes);
         return restaurantes;
     }
     public Restaurante saveRestaurante(CreateRestauranteDTO createRestauranteDTO){
@@ -46,6 +46,29 @@ public class RestauranteService {
         Restaurante restaurante = new Restaurante(createRestauranteDTO,
                 tipoCozinha,
                 user);
+        return repository.save(restaurante);
+    }
+    public Restaurante updateRestaurante(UpdateRestauranteDTO updateRestauranteDTO){
+        TipoCozinha tipoCozinha = tipoCozinhaRepository.findById(updateRestauranteDTO.tipoCozinha())
+                .orElseThrow(()-> new ResourceNotFoundException("Tipo de cozinha não encontrado"));
+
+        User dono = userRepository.findById(updateRestauranteDTO.dono())
+                .orElseThrow(()-> new ResourceNotFoundException("Dono não encontrado"));
+        if (dono.getRole().getId() != 2){
+            throw new ResourceNotFoundException("O usuário inserido não é dono de restaurante");
+        }
+
+        Restaurante restaurante = repository.findById(updateRestauranteDTO.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado"));
+
+        restaurante.setEndereco(updateRestauranteDTO.endereco());
+        restaurante.setCep(updateRestauranteDTO.cep());
+        restaurante.setTipoCozinha(tipoCozinha);
+        restaurante.setHoraAbertura(updateRestauranteDTO.horarioAbertura());
+        restaurante.setHoraFechamento(updateRestauranteDTO.horarioFechamento());
+        restaurante.setContato(updateRestauranteDTO.contato());
+        restaurante.setDono(dono);
+
         return repository.save(restaurante);
     }
 
