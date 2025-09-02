@@ -1,5 +1,6 @@
 package br.com.desafio01.entities;
 
+import br.com.desafio01.dto.CreateRestauranteDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import java.time.LocalTime;
@@ -25,5 +26,18 @@ public class Restaurante {
     private User dono;
     private String contato;
     public Restaurante() {
+    }
+    public Restaurante(CreateRestauranteDTO createRestauranteDTO,
+                       TipoCozinha tipoCozinha,
+                       User user) {
+        this.nome = createRestauranteDTO.nome();
+        this.endereco = createRestauranteDTO.endereco();
+        this.cep = createRestauranteDTO.cep();
+        this.tipoCozinha = tipoCozinha;
+        this.horaFuncionamento = createRestauranteDTO.horarioAbertura() +" - " + createRestauranteDTO.horarioFechamento();
+        this.horaAbertura = createRestauranteDTO.horarioAbertura();
+        this.horaFechamento = createRestauranteDTO.horarioFechamento();
+        this.dono = user;
+        this.contato = createRestauranteDTO.contato();
     }
 }
