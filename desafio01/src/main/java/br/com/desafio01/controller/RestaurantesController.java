@@ -6,10 +6,8 @@ import br.com.desafio01.entities.Restaurante;
 import br.com.desafio01.services.RestauranteService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -27,5 +25,10 @@ public class RestaurantesController {
     public ResponseEntity postRestaurante(@Valid @RequestBody CreateRestauranteDTO createRestauranteDTO){
         restauranteService.saveRestaurante(createRestauranteDTO);
         return ResponseEntity.ok("Restaurente "+ createRestauranteDTO.nome() +" cadastrado com sucesso");
+    }
+    @DeleteMapping("/restaurantes/{id}")
+    public ResponseEntity deleteRestaurante(@PathVariable Long id){
+        restauranteService.deleteRestaurante(id);
+        return ResponseEntity.ok("Restaurante "+ id + " foi deletado com sucesso");
     }
 }

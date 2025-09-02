@@ -11,7 +11,6 @@ import br.com.desafio01.repository.UserRepository;
 import br.com.desafio01.services.exceptions.ConflictException;
 import br.com.desafio01.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -48,6 +47,14 @@ public class RestauranteService {
                 tipoCozinha,
                 user);
         return repository.save(restaurante);
+    }
+
+    public void deleteRestaurante(Long id){
+        var restaurante = repository.findById(id);
+        if (restaurante.isEmpty()){
+            throw new ResourceNotFoundException("Restaurante não encontrado");
+        }
+        repository.deleteById(id);
     }
     private List<RestauranteResponse> responseRestauranteMetohd(List<Restaurante> restaurantes){
         List<RestauranteResponse> responseList = restaurantes.stream().map(restaurante -> new RestauranteResponse(
