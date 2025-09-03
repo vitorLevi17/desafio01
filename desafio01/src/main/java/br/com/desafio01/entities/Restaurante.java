@@ -29,6 +29,9 @@ public class Restaurante {
     @JoinColumn(name = "users_id", referencedColumnName = "id")
     private User dono;
     private String contato;
+
+    @OneToOne(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Cardapio cardapio;
     public Restaurante() {
     }
     public Restaurante(CreateRestauranteDTO createRestauranteDTO,
