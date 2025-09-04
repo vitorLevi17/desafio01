@@ -1,10 +1,10 @@
 package br.com.desafio01.controller;
 
+import br.com.desafio01.dto.CreateCardapioDTO;
+import br.com.desafio01.entities.Cardapio;
 import br.com.desafio01.services.CardapioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CardapioController {
@@ -16,8 +16,14 @@ public class CardapioController {
     }
 
     @GetMapping("restaurantes/cardapio/{id}")
-    public ResponseEntity CardapioResponse(@PathVariable Long id){
+    public ResponseEntity getCardapioRestaurante(@PathVariable Long id){
         var cardapio = cardapioService.getCardapioRestaurante(id);
         return ResponseEntity.ok(cardapio);
     }
+    @PostMapping("restaurantes/cardapio/")
+    public ResponseEntity criarCardapioRestaurante(@RequestBody CreateCardapioDTO createCardapioDTO){
+        cardapioService.saveCardapio(createCardapioDTO);
+        return ResponseEntity.ok("Cardápio criado com sucesso");
+    }
+
 }
