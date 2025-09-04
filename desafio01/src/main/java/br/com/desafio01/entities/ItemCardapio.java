@@ -24,7 +24,6 @@ public class ItemCardapio {
 
     public ItemCardapio() {
     }
-
     public ItemCardapio(CreateItemCardapioDTO createItemCardapioDTO,Boolean viagemSN, Cardapio cardapio) {
         this.nome = createItemCardapioDTO.nomeItem();
         this.descricao = createItemCardapioDTO.descricao();
@@ -32,5 +31,29 @@ public class ItemCardapio {
         this.viagemSN = viagemSN;
         this.caminhoFoto = createItemCardapioDTO.caminhoFoto();
         this.cardapio = cardapio;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public void setViagemSN(boolean viagemSN) {
+        this.viagemSN = viagemSN;
+    }
+
+    public void setCaminhoFoto(String caminhoFoto) {
+        this.caminhoFoto = caminhoFoto;
     }
 }

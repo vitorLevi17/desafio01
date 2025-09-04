@@ -74,6 +74,18 @@ public class CardapioService {
         cardapio.setNome(updateCardapioDTO.novoNome());
         return cardapioRepository.save(cardapio);
     }
+    public ItemCardapio updateItemCardapio(UpdateItemCardapioDTO updateItemCardapioDTO){
+        ItemCardapio itemCardapio = item.findById(updateItemCardapioDTO.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Item do cardápio não encontrado"));
+        var viagem = viagemSN(updateItemCardapioDTO.viagemSN());
+        itemCardapio.setNome(updateItemCardapioDTO.nome());
+        itemCardapio.setDescricao(updateItemCardapioDTO.descricao());
+        itemCardapio.setPreco(updateItemCardapioDTO.preco());
+        itemCardapio.setViagemSN(viagem);
+        itemCardapio.setCaminhoFoto(updateItemCardapioDTO.caminhoFoto());
+
+        return item.save(itemCardapio);
+    }
     public void deleteCardapio(Long id){
         var cardapio  = cardapioRepository.findById(id);
         if (cardapio.isPresent()){
