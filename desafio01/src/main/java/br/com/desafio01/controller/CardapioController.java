@@ -32,6 +32,16 @@ public class CardapioController {
         cardapioService.saveItemCardapio(createItemCardapioDTO);
         return ResponseEntity.ok("Item adicionado ao cardápio");
     }
+    @DeleteMapping("restaurantes/cardapio/{id}")
+    public ResponseEntity deletarCardapio(@PathVariable Long id){
+        cardapioService.deleteCardapio(id);
+        return ResponseEntity.ok("Cardápio excluido do restaurante");
+    }
+    @DeleteMapping("restaurantes/cardapio/remover-item-cardapio/{id}")
+    public ResponseEntity deletarItemCardapio(@PathVariable Long id){
+        cardapioService.deleteItemCardapio(id);
+        return ResponseEntity.ok("Item excluido do cardápio");
+    }
 
 
 }

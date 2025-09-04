@@ -71,7 +71,22 @@ public class CardapioService {
         ItemCardapio itemCardapio = new ItemCardapio(createItemCardapioDTO, viagem, cardapio);
         return item.save(itemCardapio);
     }
-
+    public void deleteCardapio(Long id){
+        var cardapio  = cardapioRepository.findById(id);
+        if (cardapio.isPresent()){
+            cardapioRepository.deleteById(id);
+        }else {
+            throw new ResourceNotFoundException("Cardápio não encontrado");
+        }
+    }
+    public void deleteItemCardapio(Long id){
+        var itemCardapio = item.findById(id);
+        if (itemCardapio.isPresent()){
+            item.deleteById(id);
+        }else {
+            throw new ResourceNotFoundException("Item não encontrado no cardápio");
+        }
+    }
     private Boolean viagemSN(String sn) {
         if (sn.equalsIgnoreCase("S")) {
             return TRUE;
