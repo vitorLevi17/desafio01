@@ -20,9 +20,10 @@ public class CardapioService {
     private CardapioRepository cardapioRepository;
     private ItemCardapioRepository item;
     private RestaurantesRepository restaurantesRepository;
-    public CardapioService(CardapioRepository cardapioRepository, ItemCardapioRepository item) {
+    public CardapioService(CardapioRepository cardapioRepository, ItemCardapioRepository item, RestaurantesRepository restaurantesRepository) {
         this.cardapioRepository = cardapioRepository;
         this.item = item;
+        this.restaurantesRepository=restaurantesRepository;
     }
     public CardapioResponse getCardapioRestaurante(Long id){
         Cardapio cardapio = cardapioRepository.findByRestauranteId(id).orElseThrow(()
