@@ -1,9 +1,6 @@
 package br.com.desafio01.services;
 
-import br.com.desafio01.dto.CardapioResponse;
-import br.com.desafio01.dto.CreateCardapioDTO;
-import br.com.desafio01.dto.CreateItemCardapioDTO;
-import br.com.desafio01.dto.ItemCardapioResponse;
+import br.com.desafio01.dto.*;
 import br.com.desafio01.entities.Cardapio;
 import br.com.desafio01.entities.ItemCardapio;
 import br.com.desafio01.entities.Restaurante;
@@ -70,6 +67,12 @@ public class CardapioService {
         var viagem = viagemSN(createItemCardapioDTO.viagemSN());
         ItemCardapio itemCardapio = new ItemCardapio(createItemCardapioDTO, viagem, cardapio);
         return item.save(itemCardapio);
+    }
+    public Cardapio updateCardapio(UpdateCardapioDTO updateCardapioDTO){
+        Cardapio cardapio = cardapioRepository.findById(updateCardapioDTO.id()).
+                orElseThrow(() -> new ResourceNotFoundException("Cardápio não encontrado"));
+        cardapio.setNome(updateCardapioDTO.novoNome());
+        return cardapioRepository.save(cardapio);
     }
     public void deleteCardapio(Long id){
         var cardapio  = cardapioRepository.findById(id);

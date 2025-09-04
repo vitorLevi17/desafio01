@@ -2,7 +2,7 @@ package br.com.desafio01.controller;
 
 import br.com.desafio01.dto.CreateCardapioDTO;
 import br.com.desafio01.dto.CreateItemCardapioDTO;
-import br.com.desafio01.entities.Cardapio;
+import br.com.desafio01.dto.UpdateCardapioDTO;
 import br.com.desafio01.services.CardapioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +31,11 @@ public class CardapioController {
     public ResponseEntity adicionarItemCardapio(@Valid @RequestBody CreateItemCardapioDTO createItemCardapioDTO){
         cardapioService.saveItemCardapio(createItemCardapioDTO);
         return ResponseEntity.ok("Item adicionado ao cardápio");
+    }
+    @PutMapping("restaurantes/cardapio-alterar-nome/")
+    public ResponseEntity updateCardapio(@Valid @RequestBody UpdateCardapioDTO updateCardapioDTO){
+        cardapioService.updateCardapio(updateCardapioDTO);
+        return ResponseEntity.ok("Nome do cardápio alterado com sucesso");
     }
     @DeleteMapping("restaurantes/cardapio/{id}")
     public ResponseEntity deletarCardapio(@PathVariable Long id){

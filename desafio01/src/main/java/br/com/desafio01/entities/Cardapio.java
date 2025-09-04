@@ -21,9 +21,12 @@ public class Cardapio {
 
     public Cardapio() {
     }
-
     public Cardapio(String nome, Restaurante restaurante) {
         this.nome = nome;
         this.restaurante = restaurante;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
