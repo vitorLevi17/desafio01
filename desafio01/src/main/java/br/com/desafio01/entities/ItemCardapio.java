@@ -1,5 +1,6 @@
 package br.com.desafio01.entities;
 
+import br.com.desafio01.dto.CreateItemCardapioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -22,5 +23,14 @@ public class ItemCardapio {
     private Cardapio cardapio;
 
     public ItemCardapio() {
+    }
+
+    public ItemCardapio(CreateItemCardapioDTO createItemCardapioDTO,Boolean viagemSN, Cardapio cardapio) {
+        this.nome = createItemCardapioDTO.nomeItem();
+        this.descricao = createItemCardapioDTO.descricao();
+        this.preco = createItemCardapioDTO.preco();
+        this.viagemSN = viagemSN;
+        this.caminhoFoto = createItemCardapioDTO.caminhoFoto();
+        this.cardapio = cardapio;
     }
 }
